@@ -18,9 +18,11 @@ h1{color:#123b63}
 <main>
 <div class="box">
 <h1>Daily DSR</h1>
-<p>Daily DSR reports will be displayed here.</p>
+<h2 id="todayDate"></h2>
+<p>Daily DSR reports for today.</p>
 <a class="btn" href="index.html">Back to Home</a>
 </div>
 </main>
+<script>const d=new Date();document.getElementById("todayDate").textContent=d.toLocaleDateString("en-IN",{day:"2-digit",month:"long",year:"numeric"});</script>
 </body>
 </html>
