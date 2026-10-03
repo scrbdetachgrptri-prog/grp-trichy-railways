@@ -10,7 +10,7 @@ header{background:#123b63;color:#fff;padding:14px 7%;display:flex;align-items:ce
 .hero{background:linear-gradient(135deg,#09233d,#123b63);color:#fff;padding:55px 7%}.hero-inner{max-width:1100px;margin:auto}.crumb{opacity:.8;font-size:14px}.hero h2{font-size:clamp(34px,5vw,56px);margin:14px 0 8px}.hero p{font-size:18px;opacity:.92}
 .section{padding:45px 5%}.table-box{max-width:1200px;margin:auto;background:#fff;padding:22px;border-radius:14px;box-shadow:0 5px 20px #00000012;overflow-x:auto}
 .table-box h3{text-align:center;color:#123b63;margin:5px 0 20px}.review-table{width:100%;border-collapse:collapse;min-width:800px}.review-table th,.review-table td{border:1px solid #cbd5e1;padding:13px 12px;vertical-align:top}.review-table th{background:#123b63;color:#fff;text-align:center}.review-table td:first-child{text-align:center;font-weight:bold;width:80px}.review-table td:nth-child(2){font-weight:600;line-height:1.45}.subject-link{color:#123b63;text-decoration:none;display:block}.subject-link:hover{text-decoration:underline;color:#0a6aa6}
-.note{color:#667085;font-size:13px;margin-top:18px}.btn{display:inline-block;padding:12px 22px;border-radius:6px;text-decoration:none;font-weight:bold;margin:18px 8px 0 0}.primary{background:#f2b632;color:#17202a}.secondary{border:1px solid #123b63;color:#123b63;background:#fff}
+.note{color:#667085;font-size:13px;margin-top:18px}.btn{display:inline-block;padding:12px 22px;border-radius:6px;text-decoration:none;font-weight:bold;margin:18px 8px 0 0}.primary{background:#f2b632;color:#17202a}
 footer{background:#0b263f;color:#fff;padding:30px 7%;text-align:center}footer p{color:#cbd5e1}@media(max-width:700px){nav a{display:none}.hero{padding:42px 6%}.section{padding:35px 4%}}
 </style>
 </head>
@@ -20,7 +20,7 @@ footer{background:#0b263f;color:#fff;padding:30px 7%;text-align:center}footer p{
 <section class="section"><div class="table-box">
 <h3 data-en="September Monthly Review — Subject List" data-ta="செப்டம்பர் மாதாந்திர மதிப்பாய்வு — பொருள் பட்டியல்">September Monthly Review — Subject List</h3>
 <table class="review-table"><thead><tr><th>S.No</th><th data-en="Subject" data-ta="பொருள்">Subject</th></tr></thead><tbody id="reviewBody"></tbody></table>
-<p class="note" data-en="The 29 September review heads are listed here. Click a head to open its details." data-ta="செப்டம்பர் மாதத்தின் 29 ஹெட்கள் இங்கே பட்டியலிடப்பட்டுள்ளன. ஒரு ஹெட்டை கிளிக் செய்து அதன் விவரங்களைத் திறக்கவும்.">The 29 September review heads are listed here. Click a head to open its details.</p>
+<p class="note" data-en="The 29 September review heads are listed here. Click a head to open its document." data-ta="செப்டம்பர் மாதத்தின் 29 ஹெட்கள் இங்கே பட்டியலிடப்பட்டுள்ளன. ஒரு ஹெட்டை கிளிக் செய்து அதன் ஆவணத்தைத் திறக்கவும்.">The 29 September review heads are listed here. Click a head to open its document.</p>
 <a class="btn primary" href="index.html#review" data-en="Back to Monthly Review" data-ta="மாதாந்திர மதிப்பாய்வுக்குத் திரும்ப">Back to Monthly Review</a>
 </div></section>
 <footer><h3>GRP TRICHY RAILWAYS</h3><p data-en="Government Railway Police — Railway passenger safety and public information." data-ta="அரசு ரயில்வே காவல்துறை — ரயில் பயணிகள் பாதுகாப்பு மற்றும் பொதுத் தகவல்.">Government Railway Police — Railway passenger safety and public information.</p><small>© 2026 GRP Trichy Railways</small></footer>
@@ -56,7 +56,11 @@ const subjects=[
 "Breakup Details for the month of August -2026",
 "NDPS ACT, COTPA ACT, TNP ACT, PDS RICE Upto the Month Station Wise Abstract"
 ];
-document.getElementById('reviewBody').innerHTML=subjects.map((subject,i)=>'<tr><td>'+(i+1)+'</td><td><a class="subject-link" href="review-subject.html?id='+(i+1)+'">'+subject+'</a></td></tr>').join('');
+const SHEET_PDF_URL='https://docs.google.com/spreadsheets/d/1IUqf6_cN2KsbyIhVoAlp_or2mBDCSZM8bQcY8Gu4r2g/export?format=pdf&gid=0';
+document.getElementById('reviewBody').innerHTML=subjects.map((subject,i)=>{
+ const href=i===0?SHEET_PDF_URL:'review-subject.html?id='+(i+1);
+ return '<tr><td>'+(i+1)+'</td><td><a class="subject-link" href="'+href+'" target="'+(i===0?'_blank':'_self')+'" rel="noopener">'+subject+'</a></td></tr>';
+}).join('');
 const s=document.getElementById('lang');
 function setLang(x){document.documentElement.lang=x;document.querySelectorAll('[data-en][data-ta]').forEach(e=>e.innerHTML=e.dataset[x]);localStorage.setItem('grpLanguage',x)}
 s.value=localStorage.getItem('grpLanguage')||'en';setLang(s.value);s.onchange=()=>setLang(s.value);
