@@ -56,10 +56,9 @@ const subjects=[
 "Breakup Details for the month of August -2026",
 "NDPS ACT, COTPA ACT, TNP ACT, PDS RICE Upto the Month Station Wise Abstract"
 ];
-const SHEET_PDF_URL='https://docs.google.com/spreadsheets/d/1IUqf6_cN2KsbyIhVoAlp_or2mBDCSZM8bQcY8Gu4r2g/export?format=pdf&gid=0';
 document.getElementById('reviewBody').innerHTML=subjects.map((subject,i)=>{
- const href=i===0?SHEET_PDF_URL:'review-subject.html?id='+(i+1);
- return '<tr><td>'+(i+1)+'</td><td><a class="subject-link" href="'+href+'" target="_self" rel="noopener">'+subject+'</a></td></tr>';
+ const href=i===0?'pdf-viewer.html':'review-subject.html?id='+(i+1);
+ return '<tr><td>'+(i+1)+'</td><td><a class="subject-link" href="'+href+'">'+subject+'</a></td></tr>';
 }).join('');
 const s=document.getElementById('lang');
 function setLang(x){document.documentElement.lang=x;document.querySelectorAll('[data-en][data-ta]').forEach(e=>e.innerHTML=e.dataset[x]);localStorage.setItem('grpLanguage',x)}
