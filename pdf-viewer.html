@@ -68,12 +68,6 @@ function renderTable(){
    td.textContent=titleCell;
    td.className='merged-title-row';
    tr.appendChild(td);
-  }else if(rowIndex===0){
-   const td=document.createElement('td');
-   td.colSpan=headers.length;
-   td.textContent=row.filter(v=>String(v).trim()!=='').join('  ');
-   td.className='merged-first-row';
-   tr.appendChild(td);
   }else{
    for(let i=0;i<headers.length;i++){const td=document.createElement('td');td.textContent=row[i]||'';tr.appendChild(td);}
    if(row.some(v=>String(v).trim().toLowerCase().includes('total count')))tr.classList.add('total-count-row');
