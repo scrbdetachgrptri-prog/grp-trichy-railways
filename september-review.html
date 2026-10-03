@@ -10,7 +10,7 @@ header{background:#123b63;color:#fff;padding:14px 7%;display:flex;align-items:ce
 .hero{background:linear-gradient(135deg,#09233d,#123b63);color:#fff;padding:55px 7%}.hero-inner{max-width:1100px;margin:auto}.crumb{opacity:.8;font-size:14px}.hero h2{font-size:clamp(34px,5vw,56px);margin:14px 0 8px}.hero p{font-size:18px;opacity:.92}
 .section{padding:45px 5%}.table-box{max-width:1200px;margin:auto;background:#fff;padding:22px;border-radius:14px;box-shadow:0 5px 20px #00000012;overflow-x:auto}
 .table-box h3{text-align:center;color:#123b63;margin:5px 0 20px}.review-table{width:100%;border-collapse:collapse;min-width:800px}.review-table th,.review-table td{border:1px solid #cbd5e1;padding:13px 12px;vertical-align:top}.review-table th{background:#123b63;color:#fff;text-align:center}.review-table td:first-child{text-align:center;font-weight:bold;width:80px}.review-table td:nth-child(2){font-weight:600;line-height:1.45}.subject-link{color:#123b63;text-decoration:none;display:block}.subject-link:hover{text-decoration:underline;color:#0a6aa6}
-.subject{color:#17202a}.note{color:#667085;font-size:13px;margin-top:18px}.btn{display:inline-block;padding:12px 22px;border-radius:6px;text-decoration:none;font-weight:bold;margin:18px 8px 0 0}.primary{background:#f2b632;color:#17202a}.secondary{border:1px solid #123b63;color:#123b63;background:#fff}
+.note{color:#667085;font-size:13px;margin-top:18px}.btn{display:inline-block;padding:12px 22px;border-radius:6px;text-decoration:none;font-weight:bold;margin:18px 8px 0 0}.primary{background:#f2b632;color:#17202a}.secondary{border:1px solid #123b63;color:#123b63;background:#fff}
 footer{background:#0b263f;color:#fff;padding:30px 7%;text-align:center}footer p{color:#cbd5e1}@media(max-width:700px){nav a{display:none}.hero{padding:42px 6%}.section{padding:35px 4%}}
 </style>
 </head>
@@ -19,51 +19,46 @@ footer{background:#0b263f;color:#fff;padding:30px 7%;text-align:center}footer p{
 <section class="hero"><div class="hero-inner"><div class="crumb" data-en="GRP Trichy Railways / Monthly Review / September" data-ta="GRP திருச்சி ரயில்வே / மாதாந்திர மதிப்பாய்வு / செப்டம்பர்">GRP Trichy Railways / Monthly Review / September</div><h2 data-en="September Monthly Review" data-ta="செப்டம்பர் மாதாந்திர மதிப்பாய்வு">September Monthly Review</h2><p data-en="Monthly review document list" data-ta="மாதாந்திர மதிப்பாய்வு ஆவணப் பட்டியல்">Monthly review document list</p></div></section>
 <section class="section"><div class="table-box">
 <h3 data-en="September Monthly Review — Subject List" data-ta="செப்டம்பர் மாதாந்திர மதிப்பாய்வு — பொருள் பட்டியல்">September Monthly Review — Subject List</h3>
-<table class="review-table"><thead><tr><th>S.No</th><th data-en="Subject" data-ta="பொருள்">Subject</th></tr></thead><tbody id="reviewBody"><tr><td colspan="2" style="text-align:center">Loading review data...</td></tr></tbody></table>
-<p class="note" id="dataStatus" data-en="Review data is loaded from the connected spreadsheet source." data-ta="மதிப்பாய்வு தகவல்கள் இணைக்கப்பட்ட ஸ்பிரெட்ஷீட் மூலத்திலிருந்து பெறப்படுகின்றன.">Review data is loaded from the connected spreadsheet source.</p>
-<a id="sheetLink" class="btn secondary" href="#" target="_blank" rel="noopener" style="display:none" data-en="Open Update Spreadsheet" data-ta="அப்டேட் ஸ்பிரெட்ஷீட்டைத் திறக்க">Open Update Spreadsheet</a>
+<table class="review-table"><thead><tr><th>S.No</th><th data-en="Subject" data-ta="பொருள்">Subject</th></tr></thead><tbody id="reviewBody"></tbody></table>
+<p class="note" data-en="The 29 September review heads are listed here. Click a head to open its details." data-ta="செப்டம்பர் மாதத்தின் 29 ஹெட்கள் இங்கே பட்டியலிடப்பட்டுள்ளன. ஒரு ஹெட்டை கிளிக் செய்து அதன் விவரங்களைத் திறக்கவும்.">The 29 September review heads are listed here. Click a head to open its details.</p>
 <a class="btn primary" href="index.html#review" data-en="Back to Monthly Review" data-ta="மாதாந்திர மதிப்பாய்வுக்குத் திரும்ப">Back to Monthly Review</a>
 </div></section>
 <footer><h3>GRP TRICHY RAILWAYS</h3><p data-en="Government Railway Police — Railway passenger safety and public information." data-ta="அரசு ரயில்வே காவல்துறை — ரயில் பயணிகள் பாதுகாப்பு மற்றும் பொதுத் தகவல்.">Government Railway Police — Railway passenger safety and public information.</p><small>© 2026 GRP Trichy Railways</small></footer>
 <script>
-const SHEET_CSV_URL='https://docs.google.com/spreadsheets/d/1IUqf6_cN2KsbyIhVoAlp_or2mBDCSZM8bQcY8Gu4r2g/gviz/tq?tqx=out:csv&gid=0';
-const FALLBACK_CSV_URL='review-data.csv';
+const subjects=[
+"Comparative Statement Of Property Crimes",
+"GCR Property Cases Reported For The Month Of August -2026",
+"GCR Property Cases Reported Upto the Month Of August -2026",
+"Property Crimes Performance During the Month Charge Sheet Progress - Station Wise",
+"Property Crimes Performance Upto the Month Charge Sheet Progress - Station Wise",
+"Grave Crime Cases - During the Month Gist of the Case (Head wise)",
+"Snatching Cases - During the Month",
+"Non-Grave Crime Cases – Jewels Theft Gist",
+"Non-Grave Crime Cases – Mobile Phone Theft Gist",
+"Non-Grave Crime Cases – Laptop Theft Gist",
+"Non-Grave Crime Cases – Cash & Other Theft Gist",
+"Law and Order Cases (Head Wise)",
+"Special and Local Law Cases (Head Wise)",
+"Missing Persons Details",
+"Other Cases (Accidental fall)",
+"Transfer cases",
+"Old Case Detection",
+"Disposal Cases Details abstract August -2026",
+"194 BNSS Particulars",
+"Juvenile Rescued Details",
+"NBW, Summon, CSR Particulars",
+"All UI & PT, Grave UI & PT, Not Taken on file Abstract",
+"Ex-Convict Particulars, RC, KD, Suspect Particulars",
+"Train Beat & Platform Beat particulars to Break up",
+"Comparative Statement Of Property Crimes For The Month – August - 2025-2026",
+"Comparative Statement Of Property Crimes Up To The Month – August - 2025-2026",
+"Property Wise Case Details for the year – 2026",
+"Breakup Details for the month of August -2026",
+"NDPS ACT, COTPA ACT, TNP ACT, PDS RICE Upto the Month Station Wise Abstract"
+];
+document.getElementById('reviewBody').innerHTML=subjects.map((subject,i)=>'<tr><td>'+(i+1)+'</td><td><a class="subject-link" href="review-subject.html?id='+(i+1)+'">'+subject+'</a></td></tr>').join('');
 const s=document.getElementById('lang');
 function setLang(x){document.documentElement.lang=x;document.querySelectorAll('[data-en][data-ta]').forEach(e=>e.innerHTML=e.dataset[x]);localStorage.setItem('grpLanguage',x)}
 s.value=localStorage.getItem('grpLanguage')||'en';setLang(s.value);s.onchange=()=>setLang(s.value);
-function parseCSV(text){
-  const rows=[];let row=[];let cell='';let quoted=false;
-  for(let i=0;i<text.length;i++){const c=text[i],n=text[i+1];
-    if(c==='"'&&quoted&&n==='"'){cell+='"';i++;continue}
-    if(c==='"'){quoted=!quoted;continue}
-    if(c===','&&!quoted){row.push(cell.trim());cell='';continue}
-    if((c==='\\n'||c==='\\r')&&!quoted){if(c==='\\r'&&n==='\\n')i++;row.push(cell.trim());cell='';if(row.some(v=>v!==''))rows.push(row);row=[];continue}
-    cell+=c;
-  }
-  if(cell!==''||row.length){row.push(cell.trim());if(row.some(v=>v!==''))rows.push(row)}
-  return rows;
-}
-function renderReview(text){
-  const rows=parseCSV(text);const body=document.getElementById('reviewBody');
-  const data=rows.slice(1).filter(r=>r[0]&&r[1]);
-  body.innerHTML=data.map(r=>{
-    const no=r[0], subject=r[1], report=r[2]||'', link=r[3]||'', updated=r[4]||'';
-    const href='review-subject.html?id='+encodeURIComponent(no);
-    return '<tr><td>'+no+'</td><td class="subject"><a class="subject-link" href="'+href+'" aria-label="Open subject '+no+'">'+subject+'</a>'+(report?'<div class="note">'+report+'</div>':'')+(link?'<div><a href="'+link+'" target="_blank" rel="noopener">Open Report</a></div>':'')+(updated?'<div class="note">Updated: '+updated+'</div>':'')+'</td></tr>';
-  }).join('')||'<tr><td colspan="2" style="text-align:center">No review records found.</td></tr>';
-}
-async function loadReviewData(){
-  const url=SHEET_CSV_URL||FALLBACK_CSV_URL;
-  try{
-    const res=await fetch(url,{cache:'no-store'});if(!res.ok)throw new Error('HTTP '+res.status);
-    renderReview(await res.text());
-    document.getElementById('dataStatus').textContent=SHEET_CSV_URL?'Review data loaded from the connected spreadsheet.':'Review data loaded from the website spreadsheet template.';
-    if(SHEET_CSV_URL){const a=document.getElementById('sheetLink');a.href=SHEET_CSV_URL;a.style.display='inline-block';}
-  }catch(e){
-    document.getElementById('reviewBody').innerHTML='<tr><td colspan="2" style="text-align:center">Unable to load review data.</td></tr>';
-    document.getElementById('dataStatus').textContent='Review data could not be loaded.';
-  }
-}
-loadReviewData();
 </script>
 </body></html>
