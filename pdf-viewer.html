@@ -6,22 +6,28 @@
 <title>Comparative Statement Of Property Crimes | GRP Trichy Railways</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#fff;color:#17202a;font-family:Arial,"Noto Sans Tamil",sans-serif}
-.page{width:100%;margin:0;padding:22px 12px 30px}
-h1{margin:0 0 18px;color:#123b63;font-size:30px;text-align:center}
-.toolbar{display:flex;justify-content:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
-.download,.back{display:inline-block;padding:10px 18px;border-radius:6px;text-decoration:none;font-weight:700}
+html,body{margin:0;width:100%;background:#fff;color:#17202a;font-family:Arial,"Noto Sans Tamil",sans-serif}
+.page{width:100%;margin:0;padding:12px 8px 18px}
+h1{margin:0 0 10px;color:#123b63;font-size:24px;text-align:center}
+.toolbar{display:flex;justify-content:center;gap:8px;margin-bottom:10px}
+.download,.back{display:inline-block;padding:7px 14px;border-radius:5px;text-decoration:none;font-weight:700;font-size:13px}
 .download{background:#f2b632;color:#17202a}
 .back{background:#fff;color:#123b63;border:1px solid #123b63}
-.data-box{width:100%;border:1px solid #dbe3ec;border-radius:8px;overflow:auto;background:#fff}
-table{width:100%;border-collapse:collapse;table-layout:auto}
-th,td{border:1px solid #cbd5e1;padding:10px 12px;vertical-align:middle;line-height:1.35;white-space:nowrap}
+.data-box{width:100%;overflow:hidden;background:#fff}
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+th,td{border:1px solid #cbd5e1;padding:5px 6px;vertical-align:middle;line-height:1.15;font-size:11px;overflow-wrap:anywhere;word-break:break-word}
 th{background:#123b63;color:#fff;font-weight:700;text-align:center}
 td{background:#fff}
-td:first-child{text-align:center}
-td:nth-child(2){text-align:left}
-.status{text-align:center;padding:24px;color:#667085}
-@media(max-width:900px){.page{padding:16px 6px 24px}h1{font-size:25px}.data-box{overflow-x:auto}table{min-width:max-content}th,td{padding:9px 10px}}
+td:first-child{text-align:center;width:7%}
+td:nth-child(2){text-align:left;width:25%}
+.status{text-align:center;padding:18px;color:#667085;font-size:13px}
+@media(max-width:900px){
+ .page{padding:8px 5px 12px}
+ h1{font-size:20px;margin-bottom:8px}
+ .toolbar{margin-bottom:8px}
+ .download,.back{padding:6px 11px;font-size:12px}
+ th,td{padding:4px 4px;font-size:9px;line-height:1.1}
+}
 </style>
 </head>
 <body>
@@ -48,13 +54,17 @@ function parseCSV(text){
 }
 fetch(csvUrl).then(r=>r.text()).then(text=>{
  const rows=parseCSV(text);
- if(!rows.length){throw new Error('No data');}
+ if(!rows.length)throw new Error('No data');
  const table=document.createElement('table');
  const thead=document.createElement('thead'),tr=document.createElement('tr');
  rows[0].forEach(v=>{const th=document.createElement('th');th.textContent=v;tr.appendChild(th);});
  thead.appendChild(tr);table.appendChild(thead);
  const tbody=document.createElement('tbody');
- rows.slice(1).forEach(row=>{const tr=document.createElement('tr');for(let i=0;i<rows[0].length;i++){const td=document.createElement('td');td.textContent=row[i]||'';tr.appendChild(td);}tbody.appendChild(tr);});
+ rows.slice(1).forEach(row=>{
+  const tr=document.createElement('tr');
+  for(let i=0;i<rows[0].length;i++){const td=document.createElement('td');td.textContent=row[i]||'';tr.appendChild(td);}
+  tbody.appendChild(tr);
+ });
  table.appendChild(tbody);
  const box=document.getElementById('dataBox');box.innerHTML='';box.appendChild(table);
 }).catch(()=>{document.getElementById('dataBox').innerHTML='<div class="status">Unable to load the connected spreadsheet data.</div>';});
