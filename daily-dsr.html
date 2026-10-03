@@ -64,7 +64,7 @@ function showSheet(gid,name){
  const headers=rows[0], data=rows.slice(1);
  const table=document.createElement('table');
  const thead=document.createElement('thead'),hr=document.createElement('tr');
- headers.forEach(v=>{const th=document.createElement('th');th.textContent=v;hr.appendChild(th)});
+ headers.forEach((v,i)=>{const th=document.createElement('th');th.textContent=(i===0?'Serial Number':v);hr.appendChild(th)});
  thead.appendChild(hr);table.appendChild(thead);
  const tbody=document.createElement('tbody');
  data.forEach(row=>{
