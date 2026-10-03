@@ -16,7 +16,7 @@ h1{margin:0 0 3px;color:#123b63;font-size:21px;text-align:center;flex:0 0 auto}
 .data-box{width:100%;flex:1;min-height:0;overflow:hidden;background:#fff}
 #tableWrap{transform-origin:top left;height:100%}
 table{border-collapse:collapse;table-layout:fixed;width:100%;height:100%}
-th,td{border:1px solid #cbd5e1;padding:5px 4px;vertical-align:middle;line-height:1.05;font-size:16px;overflow-wrap:anywhere;word-break:break-word;text-align:center}
+th,td{border:1px solid #cbd5e1;padding:7px 5px;vertical-align:middle;line-height:1.12;font-size:17px;overflow-wrap:anywhere;word-break:break-word;text-align:center}
 th{background:#123b63;color:#fff;font-weight:700}
 td{background:#fff}
 td:first-child{text-align:center;width:7%}
@@ -60,7 +60,7 @@ function fitTable(){
  const header=wrap.querySelector('thead');
  if(bodyRows.length){
   const headerH=header?header.getBoundingClientRect().height:0;
-  const rowH=Math.max(1,(box.clientHeight-headerH)/bodyRows.length);
+  const rowH=Math.max(32,(box.clientHeight-headerH)/bodyRows.length);
   bodyRows.forEach(r=>r.style.height=rowH+'px');
  }
  const naturalW=wrap.scrollWidth;
