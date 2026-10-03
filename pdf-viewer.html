@@ -33,7 +33,7 @@ tbody tr{height:1px}.total-count-row td{color:red}
 <h1>Comparative Statement Of Property Crimes</h1>
 <div class="toolbar">
 <a class="download" href="https://docs.google.com/spreadsheets/d/1IUqf6_cN2KsbyIhVoAlp_or2mBDCSZM8bQcY8Gu4r2g/export?format=pdf&gid=0" download="Comparative-Statement-Of-Property-Crimes.pdf">Download PDF</a>
-<a class="back" href="september-review.html">Back</a><button class="next" id="nextBtn" type="button" onclick="changePage(1)">Next</button><span id="pageInfo" style="font-size:12px;font-weight:700;color:#123b63;align-self:center">Page 1 of 2</span>
+<a class="back" href="september-review.html">Back</a>
 </div>
 <div class="data-box" id="dataBox"><div class="status">Loading data...</div></div>
 </main>
@@ -70,8 +70,7 @@ function renderPage(){
  });
  table.appendChild(tbody);wrap.appendChild(table);
  box.innerHTML='';box.appendChild(wrap);
- document.getElementById('pageInfo').textContent='Page '+currentPage+' of '+Math.ceil(allRows.length/rowsPerPage);
- document.getElementById('nextBtn').disabled=currentPage>=Math.ceil(allRows.length/rowsPerPage);
+
  requestAnimationFrame(fitTable);
 }
 function changePage(delta){
