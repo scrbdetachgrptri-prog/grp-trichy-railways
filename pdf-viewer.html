@@ -9,10 +9,14 @@
 body{margin:0;background:#fff;color:#17202a;font-family:Arial,"Noto Sans Tamil",sans-serif}
 .page{max-width:1400px;margin:0 auto;padding:28px 24px 40px}
 h1{margin:0 0 22px;color:#123b63;font-size:30px;text-align:center}
-.toolbar{display:flex;justify-content:flex-end;margin-bottom:14px}
+.toolbar{display:flex;justify-content:center;margin-bottom:18px}
 .download{display:inline-block;padding:10px 18px;border-radius:6px;background:#f2b632;color:#17202a;text-decoration:none;font-weight:700}
-.data-box{width:100%;border:1px solid #dbe3ec;border-radius:8px;overflow:hidden;background:#fff}
-#sheet-data{display:block;width:100%;height:calc(100vh - 150px);min-height:500px;border:0}
+.data-box{width:100%;border:1px solid #dbe3ec;border-radius:8px;overflow:auto;background:#fff}
+table{width:100%;border-collapse:collapse;text-align:center}
+th,td{border:1px solid #cbd5e1;padding:12px 10px;text-align:center;vertical-align:middle;line-height:1.45}
+th{background:#123b63;color:#fff;font-weight:700}
+td{background:#fff}
+.status{text-align:center;padding:24px;color:#667085}
 </style>
 </head>
 <body>
@@ -21,9 +25,33 @@ h1{margin:0 0 22px;color:#123b63;font-size:30px;text-align:center}
 <div class="toolbar">
 <a class="download" href="https://docs.google.com/spreadsheets/d/1IUqf6_cN2KsbyIhVoAlp_or2mBDCSZM8bQcY8Gu4r2g/export?format=pdf&gid=0" download="Comparative-Statement-Of-Property-Crimes.pdf">Download PDF</a>
 </div>
-<div class="data-box">
-<iframe id="sheet-data" title="Comparative Statement Of Property Crimes Data" src="https://docs.google.com/spreadsheets/d/1IUqf6_cN2KsbyIhVoAlp_or2mBDCSZM8bQcY8Gu4r2g/gviz/tq?tqx=out:html&gid=0"></iframe>
-</div>
+<div class="data-box" id="dataBox"><div class="status">Loading data...</div></div>
 </main>
+<script>
+const csvUrl='https://docs.google.com/spreadsheets/d/1IUqf6_cN2KsbyIhVoAlp_or2mBDCSZM8bQcY8Gu4r2g/gviz/tq?tqx=out:csv&gid=0';
+function parseCSV(text){
+ const rows=[];let row=[],cell='',quoted=false;
+ for(let i=0;i<text.length;i++){const c=text[i],n=text[i+1];
+  if(c==='"'){if(quoted&&n==='"'){cell+='"';i++;}else{quoted=!quoted;}}
+  else if(c===','&&!quoted){row.push(cell);cell='';}
+  else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&n==='\n')i++;row.push(cell);cell='';if(row.some(v=>v!==''))rows.push(row);row=[];}
+  else cell+=c;
+ }
+ if(cell!==''||row.length){row.push(cell);if(row.some(v=>v!==''))rows.push(row);}
+ return rows;
+}
+fetch(csvUrl).then(r=>r.text()).then(text=>{
+ const rows=parseCSV(text);
+ if(!rows.length){throw new Error('No data');}
+ const table=document.createElement('table');
+ const thead=document.createElement('thead'),tr=document.createElement('tr');
+ rows[0].forEach(v=>{const th=document.createElement('th');th.textContent=v;tr.appendChild(th);});
+ thead.appendChild(tr);table.appendChild(thead);
+ const tbody=document.createElement('tbody');
+ rows.slice(1).forEach(row=>{const tr=document.createElement('tr');for(let i=0;i<rows[0].length;i++){const td=document.createElement('td');td.textContent=row[i]||'';tr.appendChild(td);}tbody.appendChild(tr);});
+ table.appendChild(tbody);
+ const box=document.getElementById('dataBox');box.innerHTML='';box.appendChild(table);
+}).catch(()=>{document.getElementById('dataBox').innerHTML='<div class="status">Unable to load the connected spreadsheet data.</div>';});
+</script>
 </body>
 </html>
