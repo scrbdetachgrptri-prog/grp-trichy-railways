@@ -10,9 +10,9 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff;color:
 .page{width:100%;height:100vh;margin:0;padding:4px 8px 6px;display:flex;flex-direction:column}
 h1{margin:0 0 3px;color:#123b63;font-size:21px;text-align:center;flex:0 0 auto}
 .toolbar{display:flex;justify-content:center;gap:8px;margin-bottom:3px;flex:0 0 auto}
-.download,.back{display:inline-block;padding:4px 10px;border-radius:5px;text-decoration:none;font-weight:700;font-size:12px}
+.download,.back,.next{display:inline-block;padding:4px 10px;border-radius:5px;text-decoration:none;font-weight:700;font-size:12px}
 .download{background:#f2b632;color:#17202a}
-.back{background:#fff;color:#123b63;border:1px solid #123b63}
+.back{background:#fff;color:#123b63;border:1px solid #123b63}.next{background:#123b63;color:#fff;border:1px solid #123b63;cursor:pointer}.next:disabled{opacity:.45;cursor:not-allowed}
 .data-box{width:100%;flex:1;min-height:0;overflow:auto;background:#fff;position:relative;scroll-behavior:smooth;scrollbar-width:auto;scrollbar-color:#123b63 #e8eef5}.data-box::-webkit-scrollbar{width:14px;height:14px}.data-box::-webkit-scrollbar-track{background:#e8eef5;border-radius:8px}.data-box::-webkit-scrollbar-thumb{background:#123b63;border-radius:8px;border:2px solid #e8eef5}.data-box::-webkit-scrollbar-thumb:hover{background:#1c527f}
 #tableWrap{transform-origin:top left;height:100%}
 table{border-collapse:collapse;table-layout:fixed;width:100%;min-width:1800px;height:auto}
@@ -33,12 +33,14 @@ tbody tr{height:1px}.total-count-row td{color:red}
 <h1>Comparative Statement Of Property Crimes</h1>
 <div class="toolbar">
 <a class="download" href="https://docs.google.com/spreadsheets/d/1IUqf6_cN2KsbyIhVoAlp_or2mBDCSZM8bQcY8Gu4r2g/export?format=pdf&gid=0" download="Comparative-Statement-Of-Property-Crimes.pdf">Download PDF</a>
-<a class="back" href="september-review.html">Back</a>
+<a class="back" href="september-review.html">Back</a><button class="next" id="nextBtn" type="button" onclick="changePage(1)">Next</button><span id="pageInfo" style="font-size:12px;font-weight:700;color:#123b63;align-self:center">Page 1 of 2</span>
 </div>
 <div class="data-box" id="dataBox"><div class="status">Loading data...</div></div>
 </main>
 <script>
 const csvUrl='https://docs.google.com/spreadsheets/d/1IUqf6_cN2KsbyIhVoAlp_or2mBDCSZM8bQcY8Gu4r2g/gviz/tq?tqx=out:csv&gid=0';
+let allRows=[], headers=[], currentPage=1;
+const rowsPerPage=12;
 function parseCSV(text){
  const rows=[];let row=[],cell='',quoted=false;
  for(let i=0;i<text.length;i++){const c=text[i],n=text[i+1];
@@ -49,6 +51,35 @@ function parseCSV(text){
  }
  if(cell!==''||row.length){row.push(cell);if(row.some(v=>v!==''))rows.push(row);}
  return rows;
+}
+function renderPage(){
+ const box=document.getElementById('dataBox');
+ const wrap=document.createElement('div');wrap.id='tableWrap';
+ const table=document.createElement('table');
+ const thead=document.createElement('thead'),tr=document.createElement('tr');
+ headers.forEach(v=>{const th=document.createElement('th');th.textContent=v;tr.appendChild(th);});
+ thead.appendChild(tr);table.appendChild(thead);
+ const tbody=document.createElement('tbody');
+ const start=(currentPage-1)*rowsPerPage;
+ const pageRows=allRows.slice(start,start+rowsPerPage);
+ pageRows.forEach(row=>{
+  const tr=document.createElement('tr');
+  for(let i=0;i<headers.length;i++){const td=document.createElement('td');td.textContent=row[i]||'';tr.appendChild(td);}
+  if(row.some(v=>String(v).trim().toLowerCase().includes('total count')))tr.classList.add('total-count-row');
+  tbody.appendChild(tr);
+ });
+ table.appendChild(tbody);wrap.appendChild(table);
+ box.innerHTML='';box.appendChild(wrap);
+ document.getElementById('pageInfo').textContent='Page '+currentPage+' of '+Math.ceil(allRows.length/rowsPerPage);
+ document.getElementById('nextBtn').disabled=currentPage>=Math.ceil(allRows.length/rowsPerPage);
+ requestAnimationFrame(fitTable);
+}
+function changePage(delta){
+ const total=Math.ceil(allRows.length/rowsPerPage);
+ currentPage=Math.max(1,Math.min(total,currentPage+delta));
+ renderPage();
+ document.getElementById('dataBox').scrollTop=0;
+ document.getElementById('dataBox').scrollLeft=0;
 }
 function fitTable(){
  const box=document.getElementById('dataBox');
@@ -63,27 +94,13 @@ function fitTable(){
   const rowH=Math.max(42,(box.clientHeight-headerH)/bodyRows.length);
   bodyRows.forEach(r=>r.style.height=rowH+'px');
  }
- wrap.style.transform='scale(1)';
- wrap.style.width='100%';
 }
 fetch(csvUrl).then(r=>r.text()).then(text=>{
  const rows=parseCSV(text);
  if(!rows.length)throw new Error('No data');
- const wrap=document.createElement('div');wrap.id='tableWrap';
- const table=document.createElement('table');
- const thead=document.createElement('thead'),tr=document.createElement('tr');
- rows[0].forEach(v=>{const th=document.createElement('th');th.textContent=v;tr.appendChild(th);});
- thead.appendChild(tr);table.appendChild(thead);
- const tbody=document.createElement('tbody');
- rows.slice(1).forEach(row=>{
-  const tr=document.createElement('tr');
-  for(let i=0;i<rows[0].length;i++){const td=document.createElement('td');td.textContent=row[i]||'';tr.appendChild(td);}
-  if(row.some(v=>String(v).trim().toLowerCase().includes('total count')))tr.classList.add('total-count-row');
-  tbody.appendChild(tr);
- });
- table.appendChild(tbody);wrap.appendChild(table);
- const box=document.getElementById('dataBox');box.innerHTML='';box.appendChild(wrap);
- requestAnimationFrame(fitTable);
+ headers=rows[0];
+ allRows=rows.slice(1);
+ renderPage();
  window.addEventListener('resize',fitTable);
 }).catch(()=>{document.getElementById('dataBox').innerHTML='<div class="status">Unable to load the connected spreadsheet data.</div>';});
 </script>
