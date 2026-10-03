@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Review Subject | GRP Trichy Railways</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans Tamil",sans-serif;background:#f5f7fa;color:#17202a}
+header{background:#123b63;color:#fff;padding:14px 7%;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:12px}.logo{width:58px;height:58px;object-fit:contain;background:#fff;border-radius:8px;padding:3px}.brand h1{font-size:19px;margin:0}.brand p{font-size:12px;margin:2px 0;opacity:.85}nav a{color:#fff;text-decoration:none;margin:0 8px;font-size:14px}.lang{padding:8px;border-radius:5px}
+.hero{background:linear-gradient(135deg,#09233d,#123b63);color:#fff;padding:50px 7%}.hero-inner{max-width:1000px;margin:auto}.crumb{opacity:.8;font-size:14px}.hero h2{font-size:clamp(28px,4vw,48px);margin:14px 0 8px}
+.section{padding:45px 5%}.card{max-width:1000px;margin:auto;background:#fff;padding:30px;border-radius:14px;box-shadow:0 5px 20px #00000012}.subject-no{display:inline-block;background:#f2b632;padding:7px 12px;border-radius:20px;font-weight:bold}.subject-title{font-size:25px;color:#123b63;margin:18px 0;line-height:1.45}.info{background:#f8fafc;border-left:4px solid #123b63;padding:18px;margin-top:25px;line-height:1.6}.btn{display:inline-block;padding:12px 22px;border-radius:6px;text-decoration:none;font-weight:bold;margin:20px 8px 0 0}.primary{background:#f2b632;color:#17202a}.secondary{border:1px solid #123b63;color:#123b63;background:#fff}
+footer{background:#0b263f;color:#fff;padding:30px 7%;text-align:center}footer p{color:#cbd5e1}@media(max-width:700px){nav a{display:none}.hero{padding:40px 6%}.section{padding:30px 4%}}
+</style>
+</head>
+<body>
+<header><div class="brand"><img class="logo" src="image.jpg" alt="Government Railway Police emblem"><div><h1>GRP TRICHY RAILWAYS</h1><p data-en="Government Railway Police" data-ta="அரசு ரயில்வே காவல்துறை">Government Railway Police</p></div></div><nav><a href="index.html#home" data-en="Home" data-ta="முகப்பு">Home</a><a href="september-review.html" data-en="September Review" data-ta="செப்டம்பர் மதிப்பாய்வு">September Review</a><select id="lang" class="lang"><option value="en">English</option><option value="ta">தமிழ்</option></select></nav></header>
+<section class="hero"><div class="hero-inner"><div class="crumb">GRP Trichy Railways / September Monthly Review</div><h2 data-en="Review Subject" data-ta="மதிப்பாய்வு பொருள்">Review Subject</h2></div></section>
+<section class="section"><div class="card">
+<span class="subject-no" id="number">Subject</span>
+<h1 class="subject-title" id="title">Loading...</h1>
+<div class="info" data-en="This subject page is ready for the corresponding review document. The PDF, Excel file, or other report can be linked here when it is provided." data-ta="இந்த பொருளுக்கான தொடர்புடைய மதிப்பாய்வு ஆவணத்தை இங்கே இணைக்கலாம். PDF, Excel அல்லது பிற அறிக்கை வழங்கப்பட்டதும் இங்கே இணைக்கலாம்.">This subject page is ready for the corresponding review document. The PDF, Excel file, or other report can be linked here when it is provided.</div>
+<a class="btn primary" href="september-review.html" data-en="Back to Subject List" data-ta="பொருள் பட்டியலுக்குத் திரும்ப">Back to Subject List</a>
+</div></section>
+<footer><h3>GRP TRICHY RAILWAYS</h3><p data-en="Government Railway Police — Railway passenger safety and public information." data-ta="அரசு ரயில்வே காவல்துறை — ரயில் பயணிகள் பாதுகாப்பு மற்றும் பொதுத் தகவல்.">Government Railway Police — Railway passenger safety and public information.</p><small>© 2026 GRP Trichy Railways</small></footer>
+<script>
+const subjects=[
+"Comparative Statement Of Property Crimes",
+"GCR Property Cases Reported For The Month Of August -2026",
+"GCR Property Cases Reported Upto the Month Of August -2026",
+"Property Crimes Performance During the Month Charge Sheet Progress - Station Wise",
+"Property Crimes Performance Upto the Month Charge Sheet Progress - Station Wise",
+"Grave Crime Cases - During the Month Gist of the Case (Head wise)",
+"Snatching Cases - During the Month",
+"Non-Grave Crime Cases – Jewels Theft Gist",
+"Non-Grave Crime Cases – Mobile Phone Theft Gist",
+"Non-Grave Crime Cases – Laptop Theft Gist",
+"Non-Grave Crime Cases – Cash & Other Theft Gist",
+"Law and Order Cases (Head Wise)",
+"Special and Local Law Cases (Head Wise)",
+"Missing Persons Details",
+"Other Cases (Accidental fall)",
+"Transfer cases",
+"Old Case Detection",
+"Disposal Cases Details abstract August -2026",
+"194 BNSS Particulars",
+"Juvenile Rescued Details",
+"NBW, Summon, CSR Particulars",
+"All UI & PT, Grave UI & PT, Not Taken on file Abstract",
+"Ex-Convict Particulars, RC, KD, Suspect Particulars",
+"Train Beat & Platform Beat particulars to Break up",
+"Comparative Statement Of Property Crimes For The Month – August - 2025-2026",
+"Comparative Statement Of Property Crimes Up To The Month – August - 2025-2026",
+"Property Wise Case Details for the year – 2026",
+"Breakup Details for the month of August -2026",
+"NDPS ACT, COTPA ACT, TNP ACT, PDS RICE Upto the Month Station Wise Abstract"
+];
+const id=new URLSearchParams(location.search).get('id');
+const n=Math.max(1,Math.min(subjects.length,parseInt(id||'1',10)||1));
+document.getElementById('number').textContent='S.No '+n;
+document.getElementById('title').textContent=subjects[n-1];
+const s=document.getElementById('lang');
+function setLang(x){document.documentElement.lang=x;document.querySelectorAll('[data-en][data-ta]').forEach(e=>e.innerHTML=e.dataset[x]);localStorage.setItem('grpLanguage',x)}
+s.value=localStorage.getItem('grpLanguage')||'en';setLang(s.value);s.onchange=()=>setLang(s.value);
+</script>
+</body></html>
