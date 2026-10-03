@@ -58,7 +58,7 @@ async function loadReviewData(){
     const res=await fetch(url,{cache:'no-store'});if(!res.ok)throw new Error('HTTP '+res.status);
     renderReview(await res.text());
     document.getElementById('dataStatus').textContent=SHEET_CSV_URL?'Review data loaded from the connected spreadsheet.':'Review data loaded from the website spreadsheet template.';
-    if(SHEET_CSV_URL){const a=document.getElementById('sheetLink');a.href=SHEET_CSV_URL.replace(/\\/gviz/tq?/, '');a.style.display='inline-block';}
+    if(SHEET_CSV_URL){const a=document.getElementById('sheetLink');a.href=SHEET_CSV_URL;a.style.display='inline-block';}
   }catch(e){
     document.getElementById('reviewBody').innerHTML='<tr><td colspan="2" style="text-align:center">Unable to load review data.</td></tr>';
     document.getElementById('dataStatus').textContent='Review data could not be loaded.';
