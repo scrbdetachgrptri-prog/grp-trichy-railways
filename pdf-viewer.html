@@ -13,9 +13,9 @@ h1{margin:0 0 3px;color:#123b63;font-size:21px;text-align:center;flex:0 0 auto}
 .download,.back{display:inline-block;padding:4px 10px;border-radius:5px;text-decoration:none;font-weight:700;font-size:12px}
 .download{background:#f2b632;color:#17202a}
 .back{background:#fff;color:#123b63;border:1px solid #123b63}
-.data-box{width:100%;flex:1;min-height:0;overflow:hidden;background:#fff}
+.data-box{width:100%;flex:1;min-height:0;overflow:auto;background:#fff;position:relative;scroll-behavior:smooth}
 #tableWrap{transform-origin:top left;height:100%}
-table{border-collapse:collapse;table-layout:fixed;width:100%;height:100%}
+table{border-collapse:collapse;table-layout:fixed;width:100%;min-width:1800px;height:auto}
 th,td{border:1px solid #cbd5e1;padding:2px 2px;vertical-align:middle;line-height:1.18;font-size:13px;overflow-wrap:anywhere;word-break:break-word;text-align:center}
 th{background:#123b63;color:#fff;font-weight:700}
 td{background:#fff}
@@ -25,7 +25,7 @@ td:nth-child(3){width:20%}
 td:nth-child(4){width:35%}
 td:nth-child(5){width:13%}
 tbody tr{height:1px}.total-count-row td{color:red}
-.status{text-align:center;padding:12px;color:#667085;font-size:12px}
+.scroll-controls{position:fixed;right:18px;bottom:18px;display:grid;grid-template-columns:44px 44px 44px;grid-template-rows:44px 44px;gap:6px;z-index:20}.scroll-controls button{border:1px solid #123b63;border-radius:7px;background:#123b63;color:#fff;font-size:22px;font-weight:700;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.2)}.scroll-controls button:hover{background:#1c527f}.scroll-up{grid-column:2;grid-row:1}.scroll-left{grid-column:1;grid-row:2}.scroll-down{grid-column:2;grid-row:2}.scroll-right{grid-column:3;grid-row:2}.status{text-align:center;padding:12px;color:#667085;font-size:12px}
 </style>
 </head>
 <body>
@@ -35,7 +35,7 @@ tbody tr{height:1px}.total-count-row td{color:red}
 <a class="download" href="https://docs.google.com/spreadsheets/d/1IUqf6_cN2KsbyIhVoAlp_or2mBDCSZM8bQcY8Gu4r2g/export?format=pdf&gid=0" download="Comparative-Statement-Of-Property-Crimes.pdf">Download PDF</a>
 <a class="back" href="september-review.html">Back</a>
 </div>
-<div class="data-box" id="dataBox"><div class="status">Loading data...</div></div>
+<div class="data-box" id="dataBox"><div class="status">Loading data...</div></div><div class="scroll-controls" aria-label="Table scroll controls"><button class="scroll-up" type="button" aria-label="Scroll up" onclick="scrollTable(0,-450)">▲</button><button class="scroll-left" type="button" aria-label="Scroll left" onclick="scrollTable(-650,0)">◀</button><button class="scroll-down" type="button" aria-label="Scroll down" onclick="scrollTable(0,450)">▼</button><button class="scroll-right" type="button" aria-label="Scroll right" onclick="scrollTable(650,0)">▶</button></div>
 </main>
 <script>
 const csvUrl='https://docs.google.com/spreadsheets/d/1IUqf6_cN2KsbyIhVoAlp_or2mBDCSZM8bQcY8Gu4r2g/gviz/tq?tqx=out:csv&gid=0';
@@ -50,15 +50,13 @@ function parseCSV(text){
  if(cell!==''||row.length){row.push(cell);if(row.some(v=>v!==''))rows.push(row);}
  return rows;
 }
+function scrollTable(x,y){document.getElementById("dataBox").scrollBy({left:x,top:y,behavior:"smooth"});}
 function fitTable(){
  const box=document.getElementById('dataBox');
  const wrap=document.getElementById('tableWrap');
  if(!wrap)return;
- const naturalW=wrap.scrollWidth;
- const naturalH=wrap.scrollHeight;
- const scale=Math.min(1,box.clientWidth/naturalW,box.clientHeight/naturalH);
- wrap.style.transform='scale('+scale+')';
- wrap.style.width=(100/scale)+'%';
+ wrap.style.transform='scale(1)';
+ wrap.style.width='100%';
  const bodyRows=wrap.querySelectorAll('tbody tr');
  const header=wrap.querySelector('thead');
  if(bodyRows.length){
