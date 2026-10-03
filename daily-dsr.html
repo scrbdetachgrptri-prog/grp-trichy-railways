@@ -28,17 +28,18 @@ tbody tr{height:24px}
 <h1>Daily DSR</h1>
 <div class="date" id="todayDate"></div>
 <div class="toolbar">
-<a class="btn quick" href="#" onclick="return false">e-Sakshya</a>
+<a class="btn quick" href="#" onclick="showSheet('0','e-Sakshya');return false">e-Sakshya</a>
 <a class="btn quick" href="#" onclick="return false">e-Summon</a>
 <a class="btn quick" href="#" onclick="return false">SKA</a>
 <a class="btn quick" href="#" onclick="return false">Online Complaint</a>
-<a class="btn download" href="https://docs.google.com/spreadsheets/d/1IUqf6_cN2KsbyIhVoAlp_or2mBDCSZM8bQcY8Gu4r2g/export?format=pdf&gid=0" target="_blank">Download PDF</a>
+<a class="btn download" href="#" onclick="window.open('https://docs.google.com/spreadsheets/d/'+sheetId+'/export?format=pdf&gid='+currentGid,'_blank');return false" target="_blank">Download PDF</a>
 <a class="btn back" href="index.html">Back</a>
 </div>
 <div class="data-box" id="dataBox"><div class="status">Loading connected Google Spreadsheet...</div></div>
 </main>
 <script>
-const csvUrl='https://docs.google.com/spreadsheets/d/1IUqf6_cN2KsbyIhVoAlp_or2mBDCSZM8bQcY8Gu4r2g/gviz/tq?tqx=out:csv&gid=0';
+const sheetId='1IUqf6_cN2KsbyIhVoAlp_or2mBDCSZM8bQcY8Gu4r2g';
+let currentGid='0';
 const d=new Date();
 document.getElementById('todayDate').textContent=d.toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'});
 function parseCSV(text){
@@ -52,7 +53,12 @@ function parseCSV(text){
  if(cell!==''||row.length){row.push(cell);if(row.some(v=>v!==''))rows.push(row);}
  return rows;
 }
-fetch(csvUrl).then(r=>r.text()).then(text=>{
+function showSheet(gid,name){
+ currentGid=gid;
+ document.querySelector('h1').textContent=name;
+ document.getElementById('dataBox').innerHTML='<div class="status">Loading '+name+'...</div>';
+ const csvUrl='https://docs.google.com/spreadsheets/d/'+sheetId+'/gviz/tq?tqx=out:csv&gid='+gid;
+ fetch(csvUrl).then(r=>r.text()).then(text=>{
  const rows=parseCSV(text);
  if(!rows.length)throw new Error('No data');
  const headers=rows[0], data=rows.slice(1);
@@ -70,6 +76,8 @@ fetch(csvUrl).then(r=>r.text()).then(text=>{
  table.appendChild(tbody);
  const box=document.getElementById('dataBox');box.innerHTML='';box.appendChild(table);
 }).catch(()=>{document.getElementById('dataBox').innerHTML='<div class="status">Unable to load the connected Google Spreadsheet. Please check that the sheet is shared for viewing.</div>'});
+}
+showSheet('0','Daily DSR');
 </script>
 </body>
 </html>
