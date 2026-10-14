@@ -24,7 +24,7 @@ td:nth-child(2){text-align:left;width:25%}
 td:nth-child(3){width:20%}
 td:nth-child(4){width:35%}
 td:nth-child(5){width:13%}
-tbody tr{height:12px}.total-count-row td{background:#fff200;color:red;font-weight:700;font-size:19px}.merged-title-row{background:#123b63;color:#fff;font-weight:700;text-align:center;font-size:16px;padding:5px;height:30px;white-space:nowrap}.merged-first-row{background:#fff;color:#17202a;font-weight:700;text-align:center;font-size:15px;padding:4px}
+tbody tr{height:12px}.total-count-row td{background:#fff200;color:red;font-weight:700;font-size:19px}.merged-title-row{background:#123b63;color:#fff;font-weight:700;text-align:center;font-size:16px;padding:5px;height:30px;white-space:nowrap;border:1px solid #cbd5e1}.merged-first-row{background:#fff;color:#17202a;font-weight:700;text-align:center;font-size:15px;padding:4px}
 .scroll-controls{display:none}.status{text-align:center;padding:12px;color:#667085;font-size:12px}
 </style>
 </head>
@@ -56,7 +56,12 @@ function renderTable(){
  const wrap=document.createElement('div');wrap.id='tableWrap';
  const table=document.createElement('table');
  const thead=document.createElement('thead'),tr=document.createElement('tr');
- headers.forEach(v=>{const th=document.createElement('th');th.textContent=v;tr.appendChild(th);});
+ const headerTitle=headers.find(v=>String(v).trim().toLowerCase().includes('comparative statement of property crimes'));
+ if(headerTitle){
+  const th=document.createElement('th');th.colSpan=headers.length;th.textContent=headerTitle;th.className='merged-title-row';tr.appendChild(th);
+ }else{
+  headers.forEach(v=>{const th=document.createElement('th');th.textContent=v;tr.appendChild(th);});
+ }
  thead.appendChild(tr);table.appendChild(thead);
  const tbody=document.createElement('tbody');
  allRows.forEach((row,rowIndex)=>{
