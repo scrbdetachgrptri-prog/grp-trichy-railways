@@ -35,7 +35,7 @@ summaries.forEach((s,si)=>{
    cells='<td colspan="2">'+s.label+'</td>'+s.values.map((v,j)=>'<td>'+(bodyRow>=5&&bodyRow<=12&&(j===0||j===1)?detailLink(s.label,j===0?'During the Month — Rep':'During the Month — Det',v,bodyRow,j):v)+'</td>').join('');
  }else{
    cells='<td colspan="2">'+s.label+'</td>';
-   const spans=s.values.length===5?[2,2,10,1,1]:[2,2,10,1,1];
+   const spans=s.values.length===5?[2,2,11,1,1]:[2,2,11,1,1];
    s.values.forEach((v,j)=>{
      const label=j===0?'During the Month — Rep':j===1?'During the Month — Det':'Summary';
      const td=bodyRow>=5&&bodyRow<=12&&j<2?detailLink(s.label,label,v,bodyRow,j):v;
