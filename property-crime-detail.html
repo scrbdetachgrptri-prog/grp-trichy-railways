@@ -8,5 +8,22 @@ const rows=[
 ["Snatching","1","1","-","-","12","11","-","-","8","1","1","1","-","1","-","1","10"],
 ["Theft","30","10","12","3","128","70","9","-","27","14","9","46","12","11","-","42","228"]
 ];
-const labels=["During the Month — Rep","During the Month — Det","Previous Month — Rep","Previous Month — Det","Up to the Month — Rep","Up to the Month — Det","Up to the Month — Con","Up to the Month — Acq","Up to the Month — PT","Up to the Month — NTF","Up to the Month — DUI","Up to the Month — UI","Up to the Month — TR/MF","Up to the Month — AD","Up to the Month — UN","Last Year — During Corresponding Month (Rep)","Last Year — Up to Corresponding Month (Rep)"];
-const id=Number(new URLSearchParams(location.search).get("id"));const field=Number(new URLSearchParams(location.search).get("field"));const row=rows[id];if(row){document.title=row[0]+" | GRP Trichy Railways";document.getElementById("heading").textContent=row[0]+" — During the Month";const label=field===0?"During the Month — Rep":field===1?"During the Month — Det":"Selected value";const value=field===0?row[1]:field===1?row[2]:"-";document.getElementById("detailRows").innerHTML="<tr><td>Crime Head</td><td>"+row[0]+"</td></tr><tr><td>"+label+"</td><td>"+value+"</td></tr>"}else{document.getElementById("detailRows").innerHTML="<tr><td colspan=\"2\">No category selected. Return to the comparative statement and choose a category.</td></tr>"}</script></body></html>
+const p=new URLSearchParams(location.search);
+const item=p.get("item"), label=p.get("label"), value=p.get("value");
+if(item!==null && label!==null && value!==null){
+ document.title=item+" — "+label+" | GRP Trichy Railways";
+ document.getElementById("heading").textContent=item;
+ document.getElementById("detailRows").innerHTML="<tr><td>Selected table row</td><td>"+(p.get("row")||"—")+"</td></tr><tr><td>Column</td><td>"+label+"</td></tr><tr><td>Value</td><td>"+value+"</td></tr>";
+}else{
+ const id=Number(p.get("id")), field=Number(p.get("field")), row=rows[id];
+ if(row){
+  document.title=row[0]+" | GRP Trichy Railways";
+  document.getElementById("heading").textContent=row[0]+" — During the Month";
+  const lab=field===0?"During the Month — Rep":field===1?"During the Month — Det":"Selected value";
+  const val=field===0?row[1]:field===1?row[2]:"-";
+  document.getElementById("detailRows").innerHTML="<tr><td>Crime Head</td><td>"+row[0]+"</td></tr><tr><td>"+lab+"</td><td>"+val+"</td></tr>";
+ }else{
+  document.getElementById("detailRows").innerHTML="<tr><td colspan=\"2\">No category selected. Return to the comparative statement and choose a category.</td></tr>";
+ }
+}
+</script></body></html>
