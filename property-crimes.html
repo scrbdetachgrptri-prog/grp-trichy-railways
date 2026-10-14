@@ -8,5 +8,41 @@ const rows=[
 ["Snatching","1","1","-","-","12","11","-","-","8","1","1","1","-","1","-","1","10"],
 ["Theft","30","10","12","3","128","70","9","-","27","14","9","46","12","11","-","42","228"]
 ];
-document.getElementById("crimeRows").innerHTML=rows.map((r,i)=>'<tr><td>'+(i+1)+'</td><td><a class="headlink" href="property-crime-detail.html?id='+i+'">'+r[0]+'</a></td>'+r.slice(1).map((v,j)=>'<td>'+(j===0?'<a class="cell-link" href="property-crime-detail.html?id='+i+'&field=0">'+v+'</a>':v)+'</td>').join('')+'</tr>').join('')+'<tr class="total"><td colspan="2">Total (as shown in supplied sheet)</td>'+["20","7","12","3","145","86","9","1","36","18","10","47","12","12","-","44","255"].map(v=>'<td>'+v+'</td>').join('')+'</tr><tr><td colspan="2">% of detection</td><td colspan="2">35%</td><td colspan="2">27%</td><td colspan="10">65%</td><td>27%</td><td>61%</td></tr><tr><td colspan="2">Prop. lost in Rs.</td><td colspan="2">85,35,185</td><td colspan="2">3,98,700</td><td colspan="10">Rs. 1,85,21,914/-</td><td>Rs.8,62,400</td><td>90,62,350/-</td></tr><tr><td colspan="2">Prop. Rec. in Rs.</td><td colspan="2">5,85,450</td><td colspan="2">70,000</td><td colspan="10">Rs. 97,05,324/-</td><td>Rs.4,74,300</td><td>46,17,545/-</td></tr><tr class="recovery"><td colspan="2">% of recovery</td><td colspan="2">7%</td><td colspan="2">18%</td><td colspan="10">52%</td><td>55%</td><td>51%</td></tr>';
+const summaries=[
+{label:"Total (as shown in supplied sheet)",values:["20","7","12","3","145","86","9","1","36","18","10","47","12","12","-","44","255"],kind:"total"},
+{label:"% of detection",values:["35%","27%","65%","27%","61%"],kind:"summary"},
+{label:"Prop. lost in Rs.",values:["85,35,185","3,98,700","Rs. 1,85,21,914/-","Rs.8,62,400","90,62,350/-"],kind:"summary"},
+{label:"Prop. Rec. in Rs.",values:["5,85,450","70,000","Rs. 97,05,324/-","Rs.4,74,300","46,17,545/-"],kind:"summary"},
+{label:"% of recovery",values:["7%","18%","52%","55%","51%"],kind:"recovery"}
+];
+function detailLink(item,label,value,bodyRow,col){
+ return '<a class="cell-link" href="property-crime-detail.html?item='+encodeURIComponent(item)+'&label='+encodeURIComponent(label)+'&value='+encodeURIComponent(value)+'&row='+bodyRow+'&col='+col+'">'+value+'</a>';
+}
+let html=rows.map((r,i)=>{
+ const bodyRow=i+1, item=r[0];
+ const cells=r.slice(1).map((v,j)=>{
+   if(bodyRow>=5&&bodyRow<=12&&(j===0||j===1)){
+     return '<td>'+detailLink(item,j===0?'During the Month — Rep':'During the Month — Det',v,bodyRow,j)+'</td>';
+   }
+   return '<td>'+v+'</td>';
+ }).join('');
+ return '<tr><td>'+(i+1)+'</td><td><a class="headlink" href="property-crime-detail.html?id='+i+'">'+item+'</a></td>'+cells+'</tr>';
+}).join('');
+summaries.forEach((s,si)=>{
+ const bodyRow=rows.length+si+1;
+ let cells='';
+ if(s.kind==='total'){
+   cells='<td colspan="2">'+s.label+'</td>'+s.values.map((v,j)=>'<td>'+(bodyRow>=5&&bodyRow<=12&&(j===0||j===1)?detailLink(s.label,j===0?'During the Month — Rep':'During the Month — Det',v,bodyRow,j):v)+'</td>').join('');
+ }else{
+   cells='<td colspan="2">'+s.label+'</td>';
+   const spans=s.values.length===5?[2,2,10,1,1]:[2,2,10,1,1];
+   s.values.forEach((v,j)=>{
+     const label=j===0?'During the Month — Rep':j===1?'During the Month — Det':'Summary';
+     const td=bodyRow>=5&&bodyRow<=12&&j<2?detailLink(s.label,label,v,bodyRow,j):v;
+     cells+='<td colspan="'+spans[j]+'">'+td+'</td>';
+   });
+ }
+ html+='<tr class="'+(s.kind==='total'?'total':s.kind==='recovery'?'recovery':'')+'">'+cells+'</tr>';
+});
+document.getElementById("crimeRows").innerHTML=html;
 </script></body></html>
