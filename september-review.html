@@ -57,8 +57,8 @@ const subjects=[
 "NDPS ACT, COTPA ACT, TNP ACT, PDS RICE Upto the Month Station Wise Abstract"
 ];
 document.getElementById('reviewBody').innerHTML=subjects.map((subject,i)=>{
- const href=i===0?'pdf-viewer.html':'review-subject.html?id='+(i+1);
- return '<tr><td>'+(i+1)+'</td><td><a class="subject-link" href="'+href+'">'+subject+'</a></td></tr>';
+ const href=i===0?'pdf-viewer.html':(i===6?'https://docs.google.com/spreadsheets/d/1BNeD70k57niN1e0dXNtvUOnMhMT0EDK_5sALYWqQqtY/edit?gid=271241184#gid=271241184':'review-subject.html?id='+(i+1));
+ return '<tr><td>'+(i+1)+'</td><td><a class="subject-link" href="'+href+'"'+(i===6?' target="_blank" rel="noopener"':'')+'>'+subject+'</a></td></tr>';
 }).join('');
 const s=document.getElementById('lang');
 function setLang(x){document.documentElement.lang=x;document.querySelectorAll('[data-en][data-ta]').forEach(e=>e.innerHTML=e.dataset[x]);localStorage.setItem('grpLanguage',x)}
